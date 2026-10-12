@@ -1,0 +1,87 @@
+# Cavalcante Painting Company — Apache configuration
+# Requires mod_rewrite. mod_deflate, mod_headers and mod_expires are used when available.
+
+AddDefaultCharset UTF-8
+Options -Indexes
+
+# /services is a page (services.html) and also a folder (/services/...).
+# Without this, Apache would redirect /services to /services/ before the rules below run.
+DirectorySlash Off
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# ------------------------------------------------------------------
+# 1) FORCE HTTPS (301)
+#    Goes straight to the address without www, to avoid a second redirect.
+# ------------------------------------------------------------------
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+RewriteCond %{HTTP_HOST} ^(?:www\.)?(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L,NE]
+
+# ------------------------------------------------------------------
+# 2) STANDARDIZE WWW: www -> without www (301)
+# ------------------------------------------------------------------
+RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+RewriteRule ^ https://%1%{REQUEST_URI} [R=301,L,NE]
+
+# ------------------------------------------------------------------
+# 3) CLEAN URLS
+# ------------------------------------------------------------------
+# Rule A (redirect): /about.html -> /about, and /index.html -> /
+# THE_REQUEST is what the visitor typed, so the internal rewrite of Rule B never loops back here.
+RewriteCond %{THE_REQUEST} \s/+(?:index)\.html[\s?] [NC]
+RewriteRule ^ / [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+(.+?)/index\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
+
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L,NE]
+
+# One address per page: /services/ -> /services when services.html exists
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+)/$ /$1 [R=301,L,NE]
+
+# Rule B (internal rewrite): /about is answered with about.html, and the address does not change
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+</IfModule>
+
+# ------------------------------------------------------------------
+# 4) 404 PAGE
+# ------------------------------------------------------------------
+ErrorDocument 404 /404.html
+
+# ------------------------------------------------------------------
+# 5) GZIP COMPRESSION
+# ------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css
+  AddOutputFilterByType DEFLATE text/javascript application/javascript application/x-javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE text/xml application/xml application/rss+xml application/atom+xml
+  AddOutputFilterByType DEFLATE font/ttf font/otf font/woff application/font-woff application/vnd.ms-fontobject application/x-font-ttf
+</IfModule>
+
+# ------------------------------------------------------------------
+# 6) NEAR-ZERO CACHE: updates must show up right after each deploy
+# ------------------------------------------------------------------
+<IfModule mod_expires.c>
+  # No long expiry dates anywhere; Cache-Control below is the only cache rule.
+  ExpiresActive Off
+</IfModule>
+
+<IfModule mod_headers.c>
+  # HTML (and the sitemap and feed): the browser always checks for a new version
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+
+  # CSS, JS, images and fonts: one hour at most
+  <FilesMatch "\.(css|js|jpe?g|png|gif|webp|avif|svg|ico|woff2?|ttf|otf|eot)$">
+    Header set Cache-Control "max-age=3600"
+  </FilesMatch>
+</IfModule>

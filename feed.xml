@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cavalcante Painting Company Blog</title>
+    <link>https://cavalcantepainting.com/blog</link>
+    <description>Practical painting, cabinet and deck staining tips for Toronto and Ontario homeowners, from a team with 15+ years of experience.</description>
+    <language>en-ca</language>
+    <lastBuildDate>Sun, 11 Oct 2026 09:00:00 +0000</lastBuildDate>
+    <atom:link href="https://cavalcantepainting.com/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Cabinet Painting vs. Replacing Cabinets: Which Is Right for Your Kitchen?</title>
+      <link>https://cavalcantepainting.com/blog/cabinet-painting-vs-replacing</link>
+      <guid isPermaLink="true">https://cavalcantepainting.com/blog/cabinet-painting-vs-replacing</guid>
+      <pubDate>Sun, 11 Oct 2026 09:00:00 +0000</pubDate>
+      <category>Cabinet Painting</category>
+      <description>Should you paint your kitchen cabinets or replace them? A plain guide to cost, time, durability and when each option makes sense for Toronto homes.</description>
+    </item>
+    <item>
+      <title>Best Time of Year to Paint Your Home’s Exterior in Ontario</title>
+      <link>https://cavalcantepainting.com/blog/best-time-to-paint-exterior-ontario</link>
+      <guid isPermaLink="true">https://cavalcantepainting.com/blog/best-time-to-paint-exterior-ontario</guid>
+      <pubDate>Sun, 11 Oct 2026 09:00:00 +0000</pubDate>
+      <category>House Painting</category>
+      <description>When should you paint a house exterior in Ontario? Learn how temperature, rain, humidity and sun affect the finish, and how to plan your project.</description>
+    </item>
+    <item>
+      <title>Stain vs. Paint for Your Deck or Fence: What’s the Difference?</title>
+      <link>https://cavalcantepainting.com/blog/stain-vs-paint-deck-fence</link>
+      <guid isPermaLink="true">https://cavalcantepainting.com/blog/stain-vs-paint-deck-fence</guid>
+      <pubDate>Sun, 11 Oct 2026 09:00:00 +0000</pubDate>
+      <category>Staining &amp; Wood Care</category>
+      <description>Stain or paint for your deck or fence? Compare how each one looks, protects, wears and ages through Ontario weather, and which suits your wood.</description>
+    </item>
+  </channel>
+</rss>
