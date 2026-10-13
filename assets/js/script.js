@@ -83,22 +83,49 @@
     });
   }
 
-  // ---------- Gallery: enlarge a photo ----------
+  // ---------- Gallery: enlarge a photo, with arrows to the previous and next ----------
   var dialog = document.querySelector('[data-lightbox-dialog]');
   if (dialog && gallery) {
     var big = dialog.querySelector('[data-lightbox-img]');
     var caption = dialog.querySelector('[data-lightbox-cap]');
-    gallery.addEventListener('click', function (event) {
-      var button = event.target.closest('[data-lightbox]');
-      if (!button) return;
+    var current = null;
+    var show = function (button) {
+      current = button;
       big.src = button.getAttribute('data-lightbox');
       big.alt = button.getAttribute('data-caption');
       caption.textContent = button.getAttribute('data-caption');
+    };
+    // Moves only through the photos of the filter that is selected
+    var step = function (direction) {
+      var list = Array.prototype.slice.call(gallery.querySelectorAll('.gitem:not([hidden]) [data-lightbox]'));
+      var index = list.indexOf(current);
+      if (index < 0 || list.length < 2) return;
+      show(list[(index + direction + list.length) % list.length]);
+    };
+    gallery.addEventListener('click', function (event) {
+      var button = event.target.closest('[data-lightbox]');
+      if (!button) return;
+      show(button);
       if (typeof dialog.showModal === 'function') dialog.showModal();
       else window.open(big.src, '_blank');
     });
     dialog.addEventListener('click', function (event) {
-      if (event.target === dialog || event.target.closest('[data-lightbox-close]')) dialog.close();
+      if (event.target.closest('[data-lightbox-prev]')) step(-1);
+      else if (event.target.closest('[data-lightbox-next]')) step(1);
+      else if (event.target === dialog || event.target.closest('[data-lightbox-close]')) dialog.close();
     });
+    dialog.addEventListener('keydown', function (event) {
+      if (event.key === 'ArrowLeft') step(-1);
+      if (event.key === 'ArrowRight') step(1);
+    });
+    // Swipe left or right on a phone
+    var touchX = null;
+    dialog.addEventListener('touchstart', function (event) { touchX = event.changedTouches[0].clientX; }, { passive: true });
+    dialog.addEventListener('touchend', function (event) {
+      if (touchX === null) return;
+      var moved = event.changedTouches[0].clientX - touchX;
+      touchX = null;
+      if (Math.abs(moved) > 50) step(moved < 0 ? 1 : -1);
+    }, { passive: true });
   }
 })();

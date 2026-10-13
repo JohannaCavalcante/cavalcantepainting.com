@@ -165,15 +165,31 @@ mark.ph { background: #FFE9A8; color: #5A3A00; padding: 0 4px; border-radius: 4p
 .gitem { break-inside: avoid; margin-bottom: 14px; }
 @media (min-width: 1025px) { .gitem { margin-bottom: 20px; } }
 .gitem[hidden] { display: none; }
+/* Photos keep their own shape and read left to right, top to bottom (newest first).
+   Each one takes a number of thin rows that the generator works out from its shape (--sa, --sb).
+   Browsers without container units keep the simple columns above. */
+.gallery-box { container-type: inline-size; }
+@supports (width: 1cqw) {
+  .gallery { --n: 2; --g: 14px; --col: calc((100cqw - (var(--n) - 1) * var(--g)) / var(--n));
+    display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); column-gap: var(--g); grid-auto-rows: calc(var(--col) / 40); }
+  .gitem { margin-bottom: 0; grid-row-end: span var(--sa); }
+  @media (min-width: 768px) { .gitem { grid-row-end: span var(--sb); } }
+  @media (min-width: 1025px) { .gallery { --n: 3; --g: 20px; } }
+}
 .gbtn { display: block; width: 100%; border-radius: var(--radius); overflow: hidden; cursor: zoom-in; }
 .gbtn img { transition: transform .5s; }
 .gbtn:hover img { transform: scale(1.03); }
 .lightbox { padding: 0; border: 0; background: transparent; max-width: 96vw; max-height: 96vh; overflow: visible; }
 .lightbox::backdrop { background: rgba(20, 32, 60, .93); }
 .lightbox figure { margin: 0; }
-.lightbox img { display: block; max-width: 92vw; max-height: 82vh; width: auto; height: auto; border-radius: var(--radius); }
+.lightbox img { display: block; margin: 0 auto; max-width: 92vw; max-height: 82vh; width: auto; height: auto; border-radius: var(--radius); }
 .lightbox figcaption { margin-top: 12px; text-align: center; color: var(--cream); font-size: 16px; }
 .lightbox-close { position: fixed; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: var(--gold); color: var(--navy); }
+.lightbox-nav { position: fixed; top: 50%; transform: translateY(-50%); display: inline-flex; align-items: center; justify-content: center; width: 48px; height: 48px; border-radius: 50%; background: var(--gold); color: var(--navy); }
+.lightbox-prev { left: 12px; }
+.lightbox-prev svg { transform: rotate(180deg); }
+.lightbox-next { right: 12px; }
+.lightbox-nav:hover, .lightbox-close:hover { background: var(--cream); }
 
 /* ---------- footer ---------- */
 .flink { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 16px; transition: color .2s; }
