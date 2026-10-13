@@ -152,8 +152,9 @@ mark.ph { background: #FFE9A8; color: #5A3A00; padding: 0 4px; border-radius: 4p
 .acc-panel { padding: 0 0 1.25rem; font-size: 17px; line-height: 1.65; }
 
 /* ---------- WhatsApp call to action ---------- */
-.cta { background-image: linear-gradient(rgba(20, 32, 60, .88), rgba(20, 32, 60, .88)), url('/assets/img/projects/13-sala-cozinha-integrada.jpg');
-  background-size: cover; background-position: center; }
+/* Closing call-to-action band, on every page: one shared photo under a navy layer. To change it, replace /assets/img/cta-fundo.jpg */
+.cta { background-image: linear-gradient(rgba(20, 32, 60, .88), rgba(20, 32, 60, .88)), url('/assets/img/cta-fundo.jpg');
+  background-size: cover; background-position: 63% 35%; }
 
 /* ---------- gallery ---------- */
 .filter { min-height: 44px; padding: 8px 20px; border-radius: 21px; border: 1px solid var(--navy); color: var(--navy);
