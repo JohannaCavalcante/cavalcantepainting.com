@@ -153,7 +153,7 @@ mark.ph { background: #FFE9A8; color: #5A3A00; padding: 0 4px; border-radius: 4p
 
 /* ---------- WhatsApp call to action ---------- */
 /* Closing call-to-action band, on every page: one shared photo under a navy layer. To change it, replace /assets/img/cta-fundo.jpg */
-.cta { background-image: linear-gradient(rgba(20, 32, 60, .88), rgba(20, 32, 60, .88)), url('/assets/img/cta-fundo.jpg');
+.cta { background-image: linear-gradient(rgba(20, 32, 60, .88), rgba(20, 32, 60, .88)), url('/assets/img/cta-fundo.jpg?v=c600af20');
   background-size: cover; background-position: 63% 35%; }
 
 /* ---------- gallery ---------- */
