@@ -138,6 +138,8 @@
       gallery.querySelectorAll('[data-cat]').forEach(function (item) {
         // a photo can belong to more than one filter: data-cat="Painting, Cabinets & Wood Spray"
         item.hidden = !(value === 'All' || item.getAttribute('data-cat').split(/\s*,\s*/).indexOf(value) >= 0);
+        // All keeps the page order (a mix of services); inside a filter the photos follow their own order (data-rank)
+        item.style.order = value === 'All' ? '' : item.getAttribute('data-rank');
       });
     });
   }
@@ -157,6 +159,10 @@
     // Moves only through the photos of the filter that is selected
     var step = function (direction) {
       var list = Array.prototype.slice.call(gallery.querySelectorAll('.gitem:not([hidden]) [data-lightbox]'));
+      // follow the order on screen: inside a filter that is data-rank, in All the page order
+      list.sort(function (a, b) {
+        return (Number(a.parentNode.style.order) || 0) - (Number(b.parentNode.style.order) || 0);
+      });
       var index = list.indexOf(current);
       if (index < 0 || list.length < 2) return;
       show(list[(index + direction + list.length) % list.length]);
