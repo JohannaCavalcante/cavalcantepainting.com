@@ -136,7 +136,8 @@
         b.setAttribute('aria-pressed', on ? 'true' : 'false');
       });
       gallery.querySelectorAll('[data-cat]').forEach(function (item) {
-        item.hidden = !(value === 'All' || item.getAttribute('data-cat') === value);
+        // a photo can belong to more than one filter: data-cat="Painting, Cabinets & Wood Spray"
+        item.hidden = !(value === 'All' || item.getAttribute('data-cat').split(/\s*,\s*/).indexOf(value) >= 0);
       });
     });
   }
