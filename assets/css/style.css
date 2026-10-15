@@ -197,6 +197,14 @@ mark.ph { background: #FFE9A8; color: #5A3A00; padding: 0 4px; border-radius: 4p
 .flink:hover { color: var(--flame); }
 .flink svg { flex: none; color: var(--gold-dark); }
 
+/* ---------- call / text / WhatsApp icons next to a phone number ---------- */
+.popts { display: inline-flex; align-items: center; }
+.popt { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; color: inherit; transition: background-color .2s, color .2s; }
+.popt:hover { background: rgba(20, 32, 60, .1); }
+footer .popt { color: var(--gold-dark); }
+footer .popt:hover { color: var(--navy); }
+.btn svg { flex: none; }
+
 /* ---------- floating WhatsApp and consent bar ---------- */
 .wa-float { position: fixed; right: 16px; bottom: 16px; z-index: 45; display: inline-flex; align-items: center; justify-content: center;
   width: 60px; height: 60px; border-radius: 50%; background: #25D366; color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.3); transition: transform .2s; }
