@@ -197,6 +197,31 @@ mark.ph { background: #FFE9A8; color: #5A3A00; padding: 0 4px; border-radius: 4p
 .flink:hover { color: var(--flame); }
 .flink svg { flex: none; color: var(--gold-dark); }
 
+/* ---------- estimate button menu: WhatsApp, Text us, Call us ---------- */
+.est { position: relative; }
+.est-menu { position: absolute; top: calc(100% + 8px); left: 0; z-index: 60; min-width: 230px; padding: 8px; text-align: left;
+  background: #fff; color: var(--navy); border-radius: 15px; box-shadow: 0 12px 40px rgba(0, 0, 0, .22); }
+.est-right .est-menu { left: auto; right: 0; }
+.est-menu.est-above { top: auto; bottom: calc(100% + 8px); }
+.est-menu[hidden] { display: none; }
+.est-title { display: none; }
+.est-opt { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 10px 14px; border-radius: 10px; font-weight: 600; font-size: 16px; }
+.est-opt:hover, .est-opt:focus-visible { background: var(--cream); }
+.est-opt svg { flex: none; color: var(--gold-dark); }
+.est-backdrop { position: fixed; inset: 0; z-index: 59; background: rgba(20, 32, 60, .55); }
+.est-backdrop[hidden] { display: none; }
+@media (max-width: 767px) {
+  /* phones: the options rise from the bottom of the screen */
+  .est-menu { position: fixed; top: auto; left: 0; right: 0; bottom: 0; min-width: 0; padding: 10px 16px calc(18px + env(safe-area-inset-bottom));
+    border-radius: 20px 20px 0 0; box-shadow: 0 -10px 40px rgba(0, 0, 0, .25); animation: est-up .22s ease-out; }
+  .est-title { display: block; padding: 18px 0 8px; text-align: center; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 18px; position: relative; }
+  .est-title::before { content: ""; position: absolute; top: 4px; left: 50%; width: 40px; height: 4px; margin-left: -20px; border-radius: 2px; background: rgba(20, 32, 60, .2); }
+  .est-opt { min-height: 56px; font-size: 17px; }
+  body.est-open { overflow: hidden; }
+}
+@keyframes est-up { from { transform: translateY(100%); } to { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .est-menu { animation: none; } }
+
 /* ---------- call / text / WhatsApp icons next to a phone number ---------- */
 .popts { display: inline-flex; align-items: center; }
 .popt { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 50%; color: inherit; transition: background-color .2s, color .2s; }

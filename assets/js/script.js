@@ -50,6 +50,64 @@
     [300, 1000, 2500].forEach(function (ms) { setTimeout(syncHeight, ms); });
   }
 
+  // ---------- Estimate buttons: a small menu with WhatsApp, Text us and Call us ----------
+  // On phones the menu becomes a sheet at the bottom of the screen (moved to <body> so nothing covers it).
+  var phoneScreen = window.matchMedia('(max-width: 767px)');
+  var openEst = null;
+  var backdrop = null;
+  var closeEst = function (focusButton) {
+    if (!openEst) return;
+    var o = openEst;
+    openEst = null;
+    o.menu.hidden = true;
+    o.button.setAttribute('aria-expanded', 'false');
+    if (o.menu.parentNode !== o.home) o.home.appendChild(o.menu);
+    if (backdrop) backdrop.hidden = true;
+    document.body.classList.remove('est-open');
+    if (focusButton) o.button.focus();
+  };
+  document.querySelectorAll('[data-est]').forEach(function (button) {
+    var menu = document.getElementById(button.getAttribute('aria-controls'));
+    if (!menu) return;
+    var home = menu.parentNode;
+    button.addEventListener('click', function (event) {
+      event.preventDefault();
+      var wasOpen = openEst && openEst.button === button;
+      closeEst(false);
+      if (wasOpen) return;
+      if (phoneScreen.matches) {
+        if (!backdrop) {
+          backdrop = document.createElement('div');
+          backdrop.className = 'est-backdrop';
+          backdrop.hidden = true;
+          backdrop.addEventListener('click', function () { closeEst(true); });
+          document.body.appendChild(backdrop);
+        }
+        document.body.appendChild(menu);
+        backdrop.hidden = false;
+        document.body.classList.add('est-open');
+      }
+      menu.classList.remove('est-above');
+      menu.hidden = false;
+      // on larger screens, open upwards when there is no room below the button
+      if (!phoneScreen.matches && menu.getBoundingClientRect().bottom > window.innerHeight &&
+          button.getBoundingClientRect().top > menu.offsetHeight + 16) menu.classList.add('est-above');
+      button.setAttribute('aria-expanded', 'true');
+      openEst = { button: button, menu: menu, home: home };
+      var first = menu.querySelector('a');
+      if (first) first.focus();
+    });
+    menu.addEventListener('click', function (event) {
+      if (event.target.closest('a')) closeEst(false);
+    });
+  });
+  document.addEventListener('click', function (event) {
+    if (openEst && !openEst.menu.contains(event.target) && !openEst.button.contains(event.target)) closeEst(false);
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && openEst) closeEst(true);
+  });
+
   // ---------- Hero: alternate the photos every 5 seconds ----------
   var hero = document.querySelector('[data-hero]');
   if (hero) {
